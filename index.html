@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quest of Emotions ❤️</title>
+
+<style>
+body{
+  margin:0;
+  font-family: Arial, sans-serif;
+  overflow:hidden;
+  background:white;
+}
+
+/* Hearts animation */
+.heart{
+  position:absolute;
+  width:20px;
+  height:20px;
+  background:red;
+  transform:rotate(45deg);
+  animation: float 6s linear infinite;
+}
+.heart:before,.heart:after{
+  content:'';
+  position:absolute;
+  width:20px;height:20px;background:red;border-radius:50%;
+}
+.heart:before{top:-10px;}
+.heart:after{left:-10px;}
+
+@keyframes float{
+  0%{opacity:1;transform:translateY(100vh) rotate(45deg);}
+  100%{opacity:0;transform:translateY(-20vh) rotate(45deg);}
+}
+
+.center{
+  position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  text-align:center;
+}
+
+button{
+  padding:12px 25px;
+  margin:10px;
+  border:none;
+  border-radius:8px;
+  font-size:18px;
+  cursor:pointer;
+}
+
+#slideshow{display:none;background:black;color:white;height:100vh;}
+#final{display:none;background:black;color:white;height:100vh;}
+
+img{width:100%;height:100%;object-fit:cover;}
+
+.vinyl{
+  position:absolute;top:20px;left:20px;width:50px;height:50px;
+  background:black;border-radius:50%;border:5px solid grey;
+}
+.spin{animation:spin 4s linear infinite;}
+@keyframes spin{from{transform:rotate(0)}to{transform:rotate(360deg)}}
+</style>
+</head>
+
+<body>
+
+<audio id="music" loop>
+<source src="memories.mp3" type="audio/mpeg">
+</audio>
+
+<div id="intro" class="center">
+<h2>Are you ready to ponder on a quest of emotions?</h2>
+<button onclick="confirmStart()">Yes</button>
+<button onclick="moveNo(this)">No</button>
+<p id="wrong"></p>
+</div>
+
+<div id="confirm" class="center" style="display:none;">
+<h2>Are you sure?</h2>
+<button onclick="startStory()">Yes</button>
+</div>
+
+<div id="slideshow">
+<div id="vinyl" class="vinyl spin" onclick="toggleMusic()"></div>
+<h1 id="title" class="center"></h1>
+<img id="photo" onclick="nextSlide()">
+</div>
+
+<div id="final" class="center">
+<p>
+Di, I want to thank you for your constant support... 🤍
+</p>
+</div>
+
+<script>
+for(let i=0;i<30;i++){
+  let h=document.createElement("div");
+  h.className="heart";
+  h.style.left=Math.random()*100+"vw";
+  h.style.animationDuration=(3+Math.random()*3)+"s";
+  document.body.appendChild(h);
+}
+
+function moveNo(btn){
+  btn.style.position="absolute";
+  btn.style.left=Math.random()*80+"vw";
+  btn.style.top=Math.random()*80+"vh";
+  document.getElementById("wrong").innerText="Wrong option, try again 😜";
+}
+
+function confirmStart(){
+  document.getElementById("intro").style.display="none";
+  document.getElementById("confirm").style.display="block";
+}
+
+let slide=0;
+let photos=["photo1.jpg","photo2.jpg","photo3.jpg"];
+let titles=["Memories","Moments","Smiles"];
+
+function startStory(){
+  document.getElementById("confirm").style.display="none";
+  document.getElementById("slideshow").style.display="block";
+  document.getElementById("music").play();
+  showSlide();
+}
+
+function showSlide(){
+  document.getElementById("title").innerText=titles[slide];
+  document.getElementById("photo").src=photos[slide];
+}
+
+function nextSlide(){
+  slide++;
+  if(slide>=photos.length){
+    document.getElementById("slideshow").style.display="none";
+    document.getElementById("final").style.display="block";
+  } else showSlide();
+}
+
+function toggleMusic(){
+  let m=document.getElementById("music");
+  let v=document.getElementById("vinyl");
+  if(m.paused){m.play();v.classList.add("spin");}
+  else{m.pause();v.classList.remove("spin");}
+}
+</script>
+
+</body>
+</html>
