@@ -1,150 +1,116 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html><html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Quest of Emotions ❤️</title>
-
+<title>Our Memories 💖</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
 <style>
-body{
-  margin:0;
-  font-family: Arial, sans-serif;
-  overflow:hidden;
-  background:white;
-}
-
-/* Hearts animation */
-.heart{
-  position:absolute;
-  width:20px;
-  height:20px;
-  background:red;
-  transform:rotate(45deg);
-  animation: float 6s linear infinite;
-}
-.heart:before,.heart:after{
-  content:'';
-  position:absolute;
-  width:20px;height:20px;background:red;border-radius:50%;
-}
-.heart:before{top:-10px;}
-.heart:after{left:-10px;}
-
-@keyframes float{
-  0%{opacity:1;transform:translateY(100vh) rotate(45deg);}
-  100%{opacity:0;transform:translateY(-20vh) rotate(45deg);}
-}
-
-.center{
-  position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
-  text-align:center;
-}
-
-button{
-  padding:12px 25px;
-  margin:10px;
-  border:none;
-  border-radius:8px;
-  font-size:18px;
-  cursor:pointer;
-}
-
-#slideshow{display:none;background:black;color:white;height:100vh;}
-#final{display:none;background:black;color:white;height:100vh;}
-
-img{width:100%;height:100%;object-fit:cover;}
-
-.vinyl{
-  position:absolute;top:20px;left:20px;width:50px;height:50px;
-  background:black;border-radius:50%;border:5px solid grey;
-}
-.spin{animation:spin 4s linear infinite;}
-@keyframes spin{from{transform:rotate(0)}to{transform:rotate(360deg)}}
+*{box-sizing:border-box;margin:0;padding:0;font-family:Poppins, sans-serif}
+body{background:#fff;overflow:hidden}
+.hidden{display:none}
+.center{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100vh;text-align:center;padding:20px}
+h1{font-size:28px;margin-bottom:30px}
+button{padding:12px 26px;border:none;border-radius:30px;font-size:18px;margin:10px;cursor:pointer;transition:.3s}
+.yes{background:#ff4d6d;color:#fff}
+.no{background:#eee}
+#wrong{margin-top:15px;color:#ff4d6d;font-weight:500;opacity:0}
+#confirmBox{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);background:white;padding:30px;border-radius:20px;box-shadow:0 10px 30px rgba(0,0,0,.2)}
+#slideshow{height:100vh;width:100vw;background:#000;color:#fff;display:flex;align-items:center;justify-content:center;flex-direction:column}
+.slide img{max-height:70vh;max-width:90vw;border-radius:20px;box-shadow:0 10px 30px rgba(0,0,0,.6)}
+.caption{margin-top:20px;font-size:22px}
+.nav{position:absolute;top:50%;transform:translateY(-50%);font-size:40px;cursor:pointer;padding:20px}
+#left{left:0}#right{right:0}
+.heart{position:absolute;color:#ff4d6d;animation:float 4s linear infinite}
+@keyframes float{0%{transform:translateY(0) scale(1);opacity:1}100%{transform:translateY(-800px) scale(1.8);opacity:0}}
 </style>
 </head>
-
-<body>
-
-<audio id="music" loop>
-<source src="memories.mp3" type="audio/mpeg">
-</audio>
-
-<div id="intro" class="center">
-<h2>Are you ready to ponder on a quest of emotions?</h2>
-<button onclick="confirmStart()">Yes</button>
-<button onclick="moveNo(this)">No</button>
-<p id="wrong"></p>
+<body><div id="intro" class="center">
+<h1>Are you ready to ponder on a quest of emotions 💌</h1>
+<div>
+<button class="yes" onclick="showConfirm()">Yes</button>
+<button class="no" id="noBtn">No</button>
 </div>
-
-<div id="confirm" class="center" style="display:none;">
-<h2>Are you sure?</h2>
-<button onclick="startStory()">Yes</button>
+<p id="wrong">Wrong option, try again 😜</p>
+</div><div id="confirmBox" class="hidden">
+<h2>Are you sure? 🥺</h2>
+<button class="yes" onclick="startShow()">Let's start 💖</button>
+</div><div id="slideshow" class="hidden">
+<div id="left" class="nav" onclick="prevSlide()">❮</div>
+<div class="slide">
+<img id="photo" src="">
+<div class="caption" id="caption"></div>
 </div>
-
-<div id="slideshow">
-<div id="vinyl" class="vinyl spin" onclick="toggleMusic()"></div>
-<h1 id="title" class="center"></h1>
-<img id="photo" onclick="nextSlide()">
-</div>
-
-<div id="final" class="center">
-<p>
-Di, I want to thank you for your constant support... 🤍
-</p>
-</div>
-
-<script>
-for(let i=0;i<30;i++){
-  let h=document.createElement("div");
-  h.className="heart";
-  h.style.left=Math.random()*100+"vw";
-  h.style.animationDuration=(3+Math.random()*3)+"s";
+<div id="right" class="nav" onclick="nextSlide()">❯</div>
+<audio id="music" src="memories.mp3" loop></audio>
+</div><script>
+setInterval(()=>{
+  const h=document.createElement('div');
+  h.className='heart';
+  h.innerHTML='❤';
+  h.style.left=Math.random()*100+'vw';
+  h.style.fontSize=Math.random()*20+20+'px';
   document.body.appendChild(h);
+  setTimeout(()=>h.remove(),4000);
+},300);
+
+const noBtn=document.getElementById('noBtn');
+noBtn.onclick=()=>{
+  const x=Math.random()*window.innerWidth-100;
+  const y=Math.random()*window.innerHeight-50;
+  noBtn.style.position='absolute';
+  noBtn.style.left=x+'px';
+  noBtn.style.top=y+'px';
+  document.getElementById('wrong').style.opacity=1;
 }
 
-function moveNo(btn){
-  btn.style.position="absolute";
-  btn.style.left=Math.random()*80+"vw";
-  btn.style.top=Math.random()*80+"vh";
-  document.getElementById("wrong").innerText="Wrong option, try again 😜";
+function showConfirm(){
+ document.getElementById('confirmBox').classList.remove('hidden');
+ document.getElementById('intro').style.filter='blur(5px)';
 }
 
-function confirmStart(){
-  document.getElementById("intro").style.display="none";
-  document.getElementById("confirm").style.display="block";
+function startShow(){
+ document.getElementById('intro').classList.add('hidden');
+ document.getElementById('confirmBox').classList.add('hidden');
+ document.getElementById('slideshow').classList.remove('hidden');
+ document.getElementById('music').play();
+ showSlide();
 }
 
-let slide=0;
-let photos=["photo1.jpg","photo2.jpg","photo3.jpg"];
-let titles=["Memories","Moments","Smiles"];
+const slides=[
+{img:'photo1.jpg',cap:'The one in blues'},
+{img:'photo2.jpg',cap:'The one when we both were still a child'},
+{img:'photo3.jpg',cap:'The one where I was damn irritating'},
+{img:'photo4.jpg',cap:'The one where new video call experience came into existence'},
+{img:'photo5.jpg',cap:'The one where hearts were melted and face re-decorated'},
+{img:'photo6.jpg',cap:'The one with the little one'},
+{img:'photo7.jpg',cap:'The one where clubbing was a daily driver'},
+{img:'photo8.jpg',cap:'The one with no filters'},
+{img:'photo9.jpg',cap:"The one where Avenger's assemble"},
+{img:'photo10.jpg',cap:'The one where exhaustion maxed out'},
+{img:'photo11.jpg',cap:'The one where love is in the air'},
+{img:'photo12.jpg',cap:'The one where gaining journey begins'},
+{img:'photo13.jpg',cap:'The one where heroes rest'},
+{img:'photo14.jpg',cap:'The one where gaining journey unlocked max potential'},
+{img:'photo15.jpg',cap:'The one with the nerd look'},
+{img:'photo16.jpg',cap:'The one where we are grown ups'},
+{img:'photo17.jpg',cap:'The one when we are happy'},
+{img:'photo18.jpg',cap:'The one with the twining win over hearts'},
+{img:'photo19.jpg',cap:'The one where the fun never ends'},
+{img:'photo20.jpg',cap:'The one with the twining win over hearts'},
+{img:'photo21.jpg',cap:'The one where the fun never ends'}
+];
 
-function startStory(){
-  document.getElementById("confirm").style.display="none";
-  document.getElementById("slideshow").style.display="block";
-  document.getElementById("music").play();
-  showSlide();
-}
-
+let i=0;
 function showSlide(){
-  document.getElementById("title").innerText=titles[slide];
-  document.getElementById("photo").src=photos[slide];
+ document.getElementById('photo').src=slides[i].img;
+ document.getElementById('caption').innerText=slides[i].cap;
 }
+function nextSlide(){i=(i+1)%slides.length;showSlide();}
+function prevSlide(){i=(i-1+slides.length)%slides.length;showSlide();}
 
-function nextSlide(){
-  slide++;
-  if(slide>=photos.length){
-    document.getElementById("slideshow").style.display="none";
-    document.getElementById("final").style.display="block";
-  } else showSlide();
-}
-
-function toggleMusic(){
-  let m=document.getElementById("music");
-  let v=document.getElementById("vinyl");
-  if(m.paused){m.play();v.classList.add("spin");}
-  else{m.pause();v.classList.remove("spin");}
-}
-</script>
-
-</body>
+document.addEventListener('keydown',e=>{
+ if(e.key==='ArrowRight') nextSlide();
+ if(e.key==='ArrowLeft') prevSlide();
+});
+</script></body>
 </html>
