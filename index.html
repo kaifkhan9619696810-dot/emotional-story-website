@@ -1,116 +1,191 @@
-<!DOCTYPE html><html lang="en">
+<!DOCTYPE html>
+<html>
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Our Memories 💖</title>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+<title>Our Story ❤️</title>
+
 <style>
-*{box-sizing:border-box;margin:0;padding:0;font-family:Poppins, sans-serif}
-body{background:#fff;overflow:hidden}
-.hidden{display:none}
-.center{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100vh;text-align:center;padding:20px}
-h1{font-size:28px;margin-bottom:30px}
-button{padding:12px 26px;border:none;border-radius:30px;font-size:18px;margin:10px;cursor:pointer;transition:.3s}
-.yes{background:#ff4d6d;color:#fff}
-.no{background:#eee}
-#wrong{margin-top:15px;color:#ff4d6d;font-weight:500;opacity:0}
-#confirmBox{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);background:white;padding:30px;border-radius:20px;box-shadow:0 10px 30px rgba(0,0,0,.2)}
-#slideshow{height:100vh;width:100vw;background:#000;color:#fff;display:flex;align-items:center;justify-content:center;flex-direction:column}
-.slide img{max-height:70vh;max-width:90vw;border-radius:20px;box-shadow:0 10px 30px rgba(0,0,0,.6)}
-.caption{margin-top:20px;font-size:22px}
-.nav{position:absolute;top:50%;transform:translateY(-50%);font-size:40px;cursor:pointer;padding:20px}
-#left{left:0}#right{right:0}
-.heart{position:absolute;color:#ff4d6d;animation:float 4s linear infinite}
-@keyframes float{0%{transform:translateY(0) scale(1);opacity:1}100%{transform:translateY(-800px) scale(1.8);opacity:0}}
+body{
+  margin:0;
+  font-family:Arial;
+  overflow:hidden;
+  background:white;
+}
+
+/* Hearts background */
+.heart{
+  position:absolute;
+  width:20px;
+  height:20px;
+  background:red;
+  transform:rotate(45deg);
+  animation:float 6s linear infinite;
+}
+.heart:before,.heart:after{
+  content:"";
+  width:20px;height:20px;background:red;
+  border-radius:50%;
+  position:absolute;
+}
+.heart:before{top:-10px}
+.heart:after{left:-10px}
+
+@keyframes float{
+  0%{transform:translateY(100vh) rotate(45deg);opacity:1}
+  100%{transform:translateY(-10vh) rotate(45deg);opacity:0}
+}
+
+.center{
+  position:absolute;
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%);
+  text-align:center;
+}
+
+button{
+  padding:12px 25px;
+  margin:10px;
+  font-size:18px;
+  border:none;
+  border-radius:8px;
+  cursor:pointer;
+}
+
+#wrong{color:red;height:20px}
+#confirmBox{display:none}
+#startBtn{display:none}
+
+/* Slideshow */
+#slideshow{
+  display:none;
+  height:100vh;
+  width:100vw;
+  background:black;
+  color:white;
+}
+
+.slide{
+  display:none;
+  height:100vh;
+  width:100vw;
+  position:absolute;
+  text-align:center;
+}
+
+.slide img{
+  max-height:80vh;
+  max-width:90vw;
+  margin-top:5vh;
+}
+
+.title{
+  font-size:28px;
+  margin-top:10px;
+}
 </style>
 </head>
-<body><div id="intro" class="center">
-<h1>Are you ready to ponder on a quest of emotions 💌</h1>
-<div>
-<button class="yes" onclick="showConfirm()">Yes</button>
-<button class="no" id="noBtn">No</button>
+
+<body>
+
+<audio id="music" src="memories.mp3"></audio>
+
+<div id="startScreen" class="center">
+  <h2>Are you ready to ponder on a quest of emotions ❤️</h2>
+  <button id="yesBtn">Yes</button>
+  <button id="noBtn">No</button>
+  <div id="wrong"></div>
 </div>
-<p id="wrong">Wrong option, try again 😜</p>
-</div><div id="confirmBox" class="hidden">
-<h2>Are you sure? 🥺</h2>
-<button class="yes" onclick="startShow()">Let's start 💖</button>
-</div><div id="slideshow" class="hidden">
-<div id="left" class="nav" onclick="prevSlide()">❮</div>
-<div class="slide">
-<img id="photo" src="">
-<div class="caption" id="caption"></div>
+
+<div id="confirmBox" class="center">
+  <h2>Are you sure?</h2>
+  <button id="startBtn">Let's Start ❤️</button>
 </div>
-<div id="right" class="nav" onclick="nextSlide()">❯</div>
-<audio id="music" src="memories.mp3" loop></audio>
-</div><script>
+
+<div id="slideshow"></div>
+
+<script>
+// hearts generator
 setInterval(()=>{
-  const h=document.createElement('div');
-  h.className='heart';
-  h.innerHTML='❤';
-  h.style.left=Math.random()*100+'vw';
-  h.style.fontSize=Math.random()*20+20+'px';
+  let h=document.createElement("div");
+  h.className="heart";
+  h.style.left=Math.random()*100+"vw";
+  h.style.animationDuration=(3+Math.random()*3)+"s";
   document.body.appendChild(h);
-  setTimeout(()=>h.remove(),4000);
+  setTimeout(()=>h.remove(),6000);
 },300);
 
-const noBtn=document.getElementById('noBtn');
+// buttons
+let noBtn=document.getElementById("noBtn");
+let wrong=document.getElementById("wrong");
 noBtn.onclick=()=>{
-  const x=Math.random()*window.innerWidth-100;
-  const y=Math.random()*window.innerHeight-50;
-  noBtn.style.position='absolute';
-  noBtn.style.left=x+'px';
-  noBtn.style.top=y+'px';
-  document.getElementById('wrong').style.opacity=1;
-}
+  noBtn.style.position="absolute";
+  noBtn.style.left=Math.random()*80+"vw";
+  noBtn.style.top=Math.random()*80+"vh";
+  wrong.innerText="Wrong option, try again 😜";
+};
 
-function showConfirm(){
- document.getElementById('confirmBox').classList.remove('hidden');
- document.getElementById('intro').style.filter='blur(5px)';
-}
+document.getElementById("yesBtn").onclick=()=>{
+  document.getElementById("startScreen").style.display="none";
+  document.getElementById("confirmBox").style.display="block";
+  document.getElementById("startBtn").style.display="inline";
+};
+
+// ⭐ FIX — slideshow now starts correctly
+document.getElementById("startBtn").onclick=startShow;
 
 function startShow(){
- document.getElementById('intro').classList.add('hidden');
- document.getElementById('confirmBox').classList.add('hidden');
- document.getElementById('slideshow').classList.remove('hidden');
- document.getElementById('music').play();
- showSlide();
+  document.getElementById("confirmBox").style.display="none";
+  document.getElementById("slideshow").style.display="block";
+  document.getElementById("music").play();
+  createSlides();
+  showSlide();
 }
 
-const slides=[
-{img:'photo1.jpg',cap:'The one in blues'},
-{img:'photo2.jpg',cap:'The one when we both were still a child'},
-{img:'photo3.jpg',cap:'The one where I was damn irritating'},
-{img:'photo4.jpg',cap:'The one where new video call experience came into existence'},
-{img:'photo5.jpg',cap:'The one where hearts were melted and face re-decorated'},
-{img:'photo6.jpg',cap:'The one with the little one'},
-{img:'photo7.jpg',cap:'The one where clubbing was a daily driver'},
-{img:'photo8.jpg',cap:'The one with no filters'},
-{img:'photo9.jpg',cap:"The one where Avenger's assemble"},
-{img:'photo10.jpg',cap:'The one where exhaustion maxed out'},
-{img:'photo11.jpg',cap:'The one where love is in the air'},
-{img:'photo12.jpg',cap:'The one where gaining journey begins'},
-{img:'photo13.jpg',cap:'The one where heroes rest'},
-{img:'photo14.jpg',cap:'The one where gaining journey unlocked max potential'},
-{img:'photo15.jpg',cap:'The one with the nerd look'},
-{img:'photo16.jpg',cap:'The one where we are grown ups'},
-{img:'photo17.jpg',cap:'The one when we are happy'},
-{img:'photo18.jpg',cap:'The one with the twining win over hearts'},
-{img:'photo19.jpg',cap:'The one where the fun never ends'},
-{img:'photo20.jpg',cap:'The one with the twining win over hearts'},
-{img:'photo21.jpg',cap:'The one where the fun never ends'}
+// ADD YOUR PHOTOS HERE
+let slidesData=[
+  {img:"1.jpg",title:"The one in blues"},
+  {img:"2.jpg",title:"The one when we both were still a child"},
+  {img:"3.jpg",title:"The one with the traditional look"},
+  {img:"4.jpg",title:"The one where I was damn irritating"},
+  {img:"5.jpg",title:"The one where new video call experience came into existence"},
+  {img:"6.jpg",title:"The one where hearts were melted and face re-decorated"},
+  {img:"7.jpg",title:"The one with the little one"},
+  {img:"8.jpg",title:"The one where clubbing was a daily driver"},
+  {img:"9.jpg",title:"The one with no filters"},
+  {img:"10.jpg",title:"The one where Avenger's assemble"},
+  {img:"11.jpg",title:"The one where exhaustion maxed out"},
+  {img:"12.jpg",title:"The one where love is in the air"},
+  {img:"13.jpg",title:"The one where gaining journey begins"},
+  {img:"14.jpg",title:"The one where heroes rest"},
+  {img:"15.jpg",title:"The one where gaining journey unlocked max potential"},
+  {img:"16.jpg",title:"The one with the nerd look"},
+  {img:"17.jpg",title:"The one where we are grown ups"},
+  {img:"18.jpg",title:"The one when we are happy"},
+  {img:"19.jpg",title:"The one with the twining win over hearts"},
+  {img:"20.jpg",title:"The one where the fun never ends"}
 ];
 
-let i=0;
-function showSlide(){
- document.getElementById('photo').src=slides[i].img;
- document.getElementById('caption').innerText=slides[i].cap;
-}
-function nextSlide(){i=(i+1)%slides.length;showSlide();}
-function prevSlide(){i=(i-1+slides.length)%slides.length;showSlide();}
+let index=0;
 
-document.addEventListener('keydown',e=>{
- if(e.key==='ArrowRight') nextSlide();
- if(e.key==='ArrowLeft') prevSlide();
-});
-</script></body>
+function createSlides(){
+  let box=document.getElementById("slideshow");
+  slidesData.forEach(s=>{
+    let div=document.createElement("div");
+    div.className="slide";
+    div.innerHTML=`<img src="${s.img}"><div class="title">${s.title}</div>`;
+    box.appendChild(div);
+  });
+}
+
+function showSlide(){
+  let slides=document.querySelectorAll(".slide");
+  slides.forEach(s=>s.style.display="none");
+  slides[index].style.display="block";
+  index=(index+1)%slides.length;
+  setTimeout(showSlide,4000);
+}
+</script>
+
+</body>
 </html>
