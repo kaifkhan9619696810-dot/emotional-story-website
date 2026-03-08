@@ -1,190 +1,453 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Our Story ❤️</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy Women's Day</title>
 
 <style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:"Segoe UI",sans-serif;
+}
+
 body{
-  margin:0;
-  font-family:Arial;
-  overflow:hidden;
-  background:white;
+background:linear-gradient(120deg,#eef2ff,#f6f8ff,#edf1ff);
+background-size:300% 300%;
+animation:bgMove 20s ease infinite;
+overflow-x:hidden;
 }
 
-/* Hearts background */
-.heart{
-  position:absolute;
-  width:20px;
-  height:20px;
-  background:red;
-  transform:rotate(45deg);
-  animation:float 6s linear infinite;
-}
-.heart:before,.heart:after{
-  content:"";
-  width:20px;height:20px;background:red;
-  border-radius:50%;
-  position:absolute;
-}
-.heart:before{top:-10px}
-.heart:after{left:-10px}
-
-@keyframes float{
-  0%{transform:translateY(100vh) rotate(45deg);opacity:1}
-  100%{transform:translateY(-10vh) rotate(45deg);opacity:0}
+@keyframes bgMove{
+0%{background-position:0% 50%}
+50%{background-position:100% 50%}
+100%{background-position:0% 50%}
 }
 
-.center{
-  position:absolute;
-  top:50%;
-  left:50%;
-  transform:translate(-50%,-50%);
-  text-align:center;
+/* PETALS */
+
+#petal-layer{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+pointer-events:none;
+z-index:1;
 }
 
-button{
-  padding:12px 25px;
-  margin:10px;
-  font-size:18px;
-  border:none;
-  border-radius:8px;
-  cursor:pointer;
+.petal{
+position:absolute;
+font-size:22px;
+opacity:0.9;
+animation:fall linear forwards;
 }
 
-#wrong{color:red;height:20px}
-#confirmBox{display:none}
-#startBtn{display:none}
-
-/* Slideshow */
-#slideshow{
-  display:none;
-  height:100vh;
-  width:100vw;
-  background:black;
-  color:white;
+@keyframes fall{
+0%{transform:translateY(-10vh) translateX(0) rotate(0deg);}
+50%{transform:translateY(50vh) translateX(25px) rotate(180deg);}
+100%{transform:translateY(110vh) translateX(-25px) rotate(360deg);}
 }
 
-.slide{
-  display:none;
-  height:100vh;
-  width:100vw;
-  position:absolute;
-  text-align:center;
+/* SPARKLES */
+
+.sparkle{
+position:fixed;
+font-size:16px;
+animation:sparkle 2s ease-out forwards;
+pointer-events:none;
+z-index:9999;
 }
 
-.slide img{
-  max-height:80vh;
-  max-width:90vw;
-  margin-top:5vh;
+@keyframes sparkle{
+0%{opacity:0; transform:scale(0.5);}
+50%{opacity:1; transform:scale(1.4);}
+100%{opacity:0; transform:scale(0.6);}
 }
+
+/* SECTIONS */
+
+section{
+min-height:100vh;
+display:flex;
+align-items:center;
+justify-content:center;
+padding:40px;
+}
+
+/* LIQUID GLASS CARD */
+
+.card{
+
+position:relative;
+overflow:hidden;
+
+width:97%;
+max-width:1100px;
+
+min-height:80vh;
+
+display:flex;
+flex-direction:column;
+align-items:center;
+justify-content:center;
+gap:18px;
+
+background:rgba(255,255,255,0.08);
+
+backdrop-filter:blur(60px) saturate(180%);
+-webkit-backdrop-filter:blur(60px) saturate(180%);
+
+border-radius:36px;
+
+border:1px solid rgba(255,255,255,0.35);
+
+box-shadow:
+0 40px 120px rgba(0,0,0,0.2),
+inset 0 1px 0 rgba(255,255,255,0.6),
+inset 0 -1px 0 rgba(255,255,255,0.25);
+
+padding:120px 80px;
+
+text-align:center;
+
+opacity:0;
+transform:translateY(90px) scale(0.96);
+
+transition:
+opacity 0.9s ease,
+transform 0.9s ease;
+
+z-index:2;
+
+}
+
+/* GLASS REFLECTION */
+
+.card::before{
+content:"";
+position:absolute;
+top:-50%;
+left:-50%;
+width:200%;
+height:200%;
+
+background:linear-gradient(
+120deg,
+rgba(255,255,255,0.25),
+rgba(255,255,255,0.08),
+rgba(255,255,255,0.25)
+);
+
+transform:rotate(25deg);
+opacity:0.45;
+pointer-events:none;
+}
+
+/* EDGE LIGHT */
+
+.card::after{
+content:"";
+position:absolute;
+inset:0;
+border-radius:inherit;
+padding:1.5px;
+
+background:linear-gradient(
+120deg,
+rgba(255,255,255,0.8),
+rgba(255,255,255,0.15),
+rgba(255,255,255,0.8)
+);
+
+-webkit-mask:
+linear-gradient(#000 0 0) content-box,
+linear-gradient(#000 0 0);
+
+-webkit-mask-composite:xor;
+mask-composite:exclude;
+
+opacity:0.6;
+pointer-events:none;
+}
+
+/* CARD SHOW */
+
+.card.show{
+opacity:1;
+transform:translateY(0) scale(1);
+}
+
+/* TITLE */
 
 .title{
-  font-size:28px;
-  margin-top:10px;
+display:flex;
+align-items:center;
+justify-content:center;
+gap:20px;
+
+font-size:44px;
+font-weight:500;
+
+color:#2b2b2b;
+
+text-shadow:
+0 0 12px rgba(255,255,255,0.9),
+0 0 24px rgba(255,255,255,0.6),
+0 4px 12px rgba(0,0,0,0.15);
 }
+
+/* TEXT */
+
+.text{
+font-size:26px;
+line-height:1.9;
+
+color:#2b2b2b;
+
+text-shadow:
+0 0 8px rgba(255,255,255,0.9),
+0 0 16px rgba(255,255,255,0.6),
+0 3px 10px rgba(0,0,0,0.15);
+}
+
+/* FINAL TEXT REVEAL */
+
+.line{
+opacity:0;
+transform:translateY(30px);
+transition:all 0.8s ease;
+}
+
+.line.show{
+opacity:1;
+transform:translateY(0);
+}
+
+/* RIPPLE */
+
+.ripple{
+position:fixed;
+width:50px;
+height:50px;
+border-radius:50%;
+border:2px solid rgba(255,255,255,0.8);
+transform:scale(0);
+animation:rippleAnim 0.6s ease-out;
+pointer-events:none;
+z-index:3;
+}
+
+@keyframes rippleAnim{
+to{transform:scale(3); opacity:0;}
+}
+
 </style>
 </head>
 
 <body>
 
-<audio id="music" src="memories.mp3"></audio>
+<div id="petal-layer"></div>
 
-<div id="startScreen" class="center">
-  <h2>Are you ready to ponder on a quest of emotions ❤️</h2>
-  <button id="yesBtn">Yes</button>
-  <button id="noBtn">No</button>
-  <div id="wrong"></div>
+<section>
+<div class="card">
+<div class="title">
+<span>🌸</span>
+Happy Women's Day
+<span>🌸</span>
 </div>
-
-<div id="confirmBox" class="center">
-  <h2>Are you sure?</h2>
-  <button id="startBtn">Let's Start ❤️</button>
 </div>
+</section>
 
-<div id="slideshow"></div>
+<section>
+<div class="card text">
+🌷 To someone wonderful,<br><br>
+I may not know you<br>
+as well as I would like to yet,<br><br>
+but I do know one thing —<br>
+you seem like someone<br>
+who makes the world<br>
+a little brighter. ✨
+</div>
+</section>
+
+<section>
+<div class="card text">
+🌼 The way you carry yourself,<br>
+your presence,<br>
+and the little things about you<br><br>
+make you truly special<br>
+in your own way. 💫
+</div>
+</section>
+
+<section>
+<div class="card text">
+🌸 I may not know you<br>
+as much as I’d like to yet,<br><br>
+but the little I do know<br>
+is enough to say<br>
+you seem like someone<br>
+truly special. ✨
+</div>
+</section>
+
+<section>
+<div class="card text">
+
+<div class="line">💐 So on this Women's Day,</div>
+<div class="line">I just wanted to say</div>
+<div class="line">I hope your day is filled</div>
+<div class="line">with smiles and happiness.</div>
+<div class="line">Happy Women's Day 🌸</div>
+<div class="line">— from someone who thinks you're pretty amazing.</div>
+
+</div>
+</section>
 
 <script>
-// hearts generator
-setInterval(()=>{
-  let h=document.createElement("div");
-  h.className="heart";
-  h.style.left=Math.random()*100+"vw";
-  h.style.animationDuration=(3+Math.random()*3)+"s";
-  document.body.appendChild(h);
-  setTimeout(()=>h.remove(),6000);
-},300);
 
-// buttons
-let noBtn=document.getElementById("noBtn");
-let wrong=document.getElementById("wrong");
-noBtn.onclick=()=>{
-  noBtn.style.position="absolute";
-  noBtn.style.left=Math.random()*80+"vw";
-  noBtn.style.top=Math.random()*80+"vh";
-  wrong.innerText="Wrong option, try again 😜";
-};
+/* SCROLL REVEAL */
 
-document.getElementById("yesBtn").onclick=()=>{
-  document.getElementById("startScreen").style.display="none";
-  document.getElementById("confirmBox").style.display="block";
-  document.getElementById("startBtn").style.display="inline";
-};
+const cards=document.querySelectorAll(".card");
+let triggered=false;
 
-// ⭐ FIX — slideshow now starts correctly
-document.getElementById("startBtn").onclick=startShow;
+function reveal(){
 
-function startShow(){
-  document.getElementById("confirmBox").style.display="none";
-  document.getElementById("slideshow").style.display="block";
-  document.getElementById("music").play();
-  createSlides();
-  showSlide();
+const trigger=window.innerHeight*0.55;
+
+cards.forEach((card,index)=>{
+
+const rect=card.getBoundingClientRect();
+
+if(rect.top<trigger && rect.bottom>trigger){
+
+card.classList.add("show");
+
+if(index===cards.length-1 && !triggered){
+revealLines();
+sparkles();
+triggered=true;
 }
 
-// ADD YOUR PHOTOS HERE
-let slidesData=[
-  {img:"1.jpg",title:"The one in blues"},
-  {img:"2.jpg",title:"The one when we both were still a child"},
-  {img:"3.jpg",title:"The one with the traditional look"},
-  {img:"4.jpg",title:"The one where I was damn irritating"},
-  {img:"5.jpg",title:"The one where new video call experience came into existence"},
-  {img:"6.jpg",title:"The one where hearts were melted and face re-decorated"},
-  {img:"7.jpg",title:"The one with the little one"},
-  {img:"8.jpg",title:"The one where clubbing was a daily driver"},
-  {img:"9.jpg",title:"The one with no filters"},
-  {img:"10.jpg",title:"The one where Avenger's assemble"},
-  {img:"11.jpg",title:"The one where exhaustion maxed out"},
-  {img:"12.jpg",title:"The one where love is in the air"},
-  {img:"13.jpg",title:"The one where gaining journey begins"},
-  {img:"14.jpg",title:"The one where heroes rest"},
-  {img:"15.jpg",title:"The one where gaining journey unlocked max potential"},
-  {img:"16.jpg",title:"The one with the nerd look"},
-  {img:"17.jpg",title:"The one where we are grown ups"},
-  {img:"18.jpg",title:"The one when we are happy"},
-  {img:"19.jpg",title:"The one with the twining win over hearts"},
-  {img:"20.jpg",title:"The one where the fun never ends"}
-];
-
-let index=0;
-
-function createSlides(){
-  let box=document.getElementById("slideshow");
-  slidesData.forEach(s=>{
-    let div=document.createElement("div");
-    div.className="slide";
-    div.innerHTML=`<img src="${s.img}"><div class="title">${s.title}</div>`;
-    box.appendChild(div);
-  });
+}else{
+card.classList.remove("show");
 }
 
-function showSlide(){
-  let slides=document.querySelectorAll(".slide");
-  slides.forEach(s=>s.style.display="none");
-  slides[index].style.display="block";
-  index=(index+1)%slides.length;
-  setTimeout(showSlide,4000);
+});
+
 }
+
+window.addEventListener("scroll",reveal);
+reveal();
+
+/* PETALS */
+
+function petal(){
+
+const p=document.createElement("div");
+
+p.className="petal";
+p.innerHTML="🌸";
+
+p.style.left=Math.random()*100+"%";
+p.style.animationDuration=(Math.random()*6+6)+"s";
+
+document.getElementById("petal-layer").appendChild(p);
+
+setTimeout(()=>{p.remove()},12000);
+
+}
+
+setInterval(petal,700);
+
+/* FINAL TEXT REVEAL */
+
+function revealLines(){
+
+document.querySelectorAll(".line").forEach((line,i)=>{
+
+setTimeout(()=>{
+line.classList.add("show");
+},i*700);
+
+});
+
+}
+
+/* SPARKLES */
+
+function sparkles(){
+
+for(let i=0;i<30;i++){
+
+setTimeout(()=>{
+
+const s=document.createElement("div");
+
+s.className="sparkle";
+s.innerHTML="✨";
+
+s.style.left=(20+Math.random()*60)+"%";
+s.style.top=(20+Math.random()*60)+"%";
+
+document.body.appendChild(s);
+
+setTimeout(()=>{s.remove()},2000);
+
+},i*80);
+
+}
+
+}
+
+/* RIPPLE */
+
+document.addEventListener("touchmove",e=>{
+
+const r=document.createElement("div");
+r.className="ripple";
+
+r.style.left=(e.touches[0].clientX-25)+"px";
+r.style.top=(e.touches[0].clientY-25)+"px";
+
+document.body.appendChild(r);
+
+setTimeout(()=>{r.remove()},600);
+
+});
+
+/* PARALLAX */
+
+window.addEventListener("scroll",()=>{
+
+const scroll=window.scrollY;
+
+document.body.style.backgroundPosition=
+"center "+(scroll*0.25)+"px";
+
+});
+
+/* 3D TILT */
+
+if (window.DeviceOrientationEvent) {
+
+window.addEventListener("deviceorientation", e=>{
+
+const tiltX=e.beta/30;
+const tiltY=e.gamma/30;
+
+document.querySelectorAll(".card").forEach(card=>{
+card.style.transform=`rotateX(${tiltX}deg) rotateY(${tiltY}deg)`
+});
+
+});
+
+}
+
 </script>
 
 </body>
